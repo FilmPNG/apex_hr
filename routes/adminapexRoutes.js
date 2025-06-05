@@ -1,11 +1,11 @@
- express = require('express');
-const { getAllUsers } = require('../controllers/adminapexControllers');
+const express = require('express');
+const authenticateToken = require('../middleware/authMiddleware');
+const { isAdmin } = require('../middleware/roleMiddleware');
 
 const router = express.Router();
 
-// Admin login route
-router.get('/',getAllUsers);
-
-
+router.get('/admin-only', authenticateToken, isAdmin, (req, res) => {
+  res.json({ message: 'Admin content' });
+});
 
 module.exports = router;
