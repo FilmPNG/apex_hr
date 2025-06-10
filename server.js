@@ -8,6 +8,10 @@ const adminRoutes = require("./routes/adminapexRoutes")
 const newsRoutes = require("./routes/newsRoutes")
 const useraccountRounts = require("./routes/useraccountRounts")
 const authRoutes = require("./routes/authRoutes");
+const otpRoutes = require('./routes/otpRoutes'); 
+
+const employeeRoutes = require('./routes/employeeRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
 
 
 // Load environment variables
@@ -42,10 +46,13 @@ app.use(bodyParser.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/admin", adminRoutes);
-app.use("/api/news", newsRoutes);
-app.use("/api/useraccount", useraccountRounts);
-app.use("/api/auth", authRoutes);
-app.use("/api/admin", adminRoutes);
+app.use("/api/news", newsRoutes); //หน้าข่าว
+app.use("/api/useraccount", useraccountRounts); // เช็คuser
+app.use("/api/auth", authRoutes); //แจกโทคเคน
+app.use("/api/otp", otpRoutes);
+app.use('/public', express.static('public')); 
+app.use('/api/employee', employeeRoutes);
+app.use('/api/upload', uploadRoutes);
 
 
 

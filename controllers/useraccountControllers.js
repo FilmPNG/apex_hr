@@ -30,9 +30,9 @@ exports.login = async (req, res) => {
     if (!user) return res.status(401).json({ message: 'Invalid username or password' });
     if (user.is_active !== 1) return res.status(403).json({ message: 'Account inactive' });
 
-    // เช็ครหัสผ่านแบบ plain text (ไม่ปลอดภัย ควรเข้ารหัสจริง)
-    if (user.password !== password) 
-      return res.status(401).json({ message: 'Invalid username or password' });
+    // ✅ เปลี่ยนจากเช็ค plain text เป็น bcrypt
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(401).json({ message: 'Invalid username or password' });
 
     const payload = {
       id: user.id,
