@@ -4,20 +4,11 @@ const router = express.Router()
 const multer = require('multer')
 const path = require('path')
 const employeeController = require('../controllers/employeesController');
+const { addEmployee, upload } = require('../controllers/employeesController');
 
 
-// 📦 สร้าง storage สำหรับ multer
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/')
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
-    cb(null, uniqueSuffix + '-' + file.originalname)
-  },
-})
 
-const upload = multer({ storage })
+
 
 const uploadFields = upload.fields([
   { name: 'jobApplication', maxCount: 10 },
@@ -28,6 +19,18 @@ const uploadFields = upload.fields([
   { name: 'employmentContract', maxCount: 1 },
 ])
 
-router.post('/add', uploadFields, employeeController.addEmployee)
+
+router.post('/addemployee', uploadFields, addEmployee);
+
+
+//router.post('/add', uploadFields, employeeController.addEmployee)
+
+// 🔽 API: ดึงพนักงานทั้งหมด
+router.get('/', employeeController.getAllEmployees);
+
+
+router.get("/:id", employeeController.getEmployeeById);
+
+// router.delete('/employee/:id', employeeController.deleteEmployee);
 
 module.exports = router
